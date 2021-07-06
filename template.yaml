@@ -1,0 +1,68 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Serverless Express Application/API powered by API Gateway and Lambda
+
+Resources:
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Environment:
+        Variables:
+          DYNAMODB_TABLE_NAME: !Ref DynamoTable
+      Handler: src/index.handler
+      MemorySize: 128
+      Runtime: nodejs12.x
+      Timeout: 60
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /
+            Method: ANY
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /{proxy+}
+            Method: ANY
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoTable
+
+  DynamoTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+Outputs:
+  LambdaFunctionConsoleUrl:
+    Description: Console URL for the Lambda Function.
+    Value: !Sub https://${AWS::Region}.console.aws.amazon.com/lambda/home?region=${AWS::Region}#/functions/${ApiFunction}
+
+  ApiGatewayApiConsoleUrl:
+    Description: Console URL for the API Gateway API's Stage.
+    Value: !Sub https://${AWS::Region}.console.aws.amazon.com/apigateway/home?region=${AWS::Region}#/apis/${ApiGatewayApi}/stages/prod
+
+  ApiUrl:
+    Description:
+      Invoke URL for your API. Clicking this link will perform a GET request
+      on the root resource of your API.
+    Value: !Sub https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/prod/
+
+  LambdaFunctionName:
+    Description: Name of the Serverless Express Lambda Function
+    Value: !Ref ApiFunction

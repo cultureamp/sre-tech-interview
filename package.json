@@ -1,0 +1,14 @@
+{
+  "name": "cultureamp-technical-interview",
+  "version": "1.0.0",
+  "description": "Example code for interview",
+  "main": "src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@vendia/serverless-express": "^4.3.9",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.939.0"
+  }
+}
