@@ -1,4 +1,4 @@
-exports.createAWSOptions = function () {
+export const createAWSOptions = function () {
   if (process.env["IS_LOCAL"] == "true") {
     return {
       region: "local",
