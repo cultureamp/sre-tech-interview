@@ -40,38 +40,53 @@ Create table within DynamoDB Local with:
   "TableName":"comment-vibe",
   "AttributeDefinitions":[
     {
-      "AttributeName":"id",
-      "AttributeType":"N"
+      "AttributeName":"pk",
+      "AttributeType":"S"
+    },
+    {
+      "AttributeName":"sk",
+      "AttributeType":"S"
     }
   ],
   "KeySchema":[
     {
-      "AttributeName":"id",
+      "AttributeName":"pk",
       "KeyType":"HASH"
+    },
+    {
+      "AttributeName":"sk",
+      "KeyType":"RANGE"
     }
   ],
   "BillingMode":"PAY_PER_REQUEST"
 }'
 
 # example response
-
 {
     "TableDescription": {
         "AttributeDefinitions": [
             {
-                "AttributeName": "id",
-                "AttributeType": "N"
+                "AttributeName": "pk",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "sk",
+                "AttributeType": "S"
             }
         ],
-        "TableName": "local-testing",
+        "TableName": "comment-vibe",
         "KeySchema": [
             {
-                "AttributeName": "id",
+                "AttributeName": "pk",
                 "KeyType": "HASH"
+            },
+            {
+                "AttributeName": "sk",
+                "KeyType": "RANGE"
             }
         ],
         "TableStatus": "ACTIVE",
-        "CreationDateTime": "2022-09-02T14:22:51.954000+10:00",
+        "CreationDateTime": "2022-09-02T15:11:23.509000+10:00",
         "ProvisionedThroughput": {
             "LastIncreaseDateTime": "1970-01-01T10:00:00+10:00",
             "LastDecreaseDateTime": "1970-01-01T10:00:00+10:00",
@@ -81,10 +96,10 @@ Create table within DynamoDB Local with:
         },
         "TableSizeBytes": 0,
         "ItemCount": 0,
-        "TableArn": "arn:aws:dynamodb:ddblocal:000000000000:table/local-testing",
+        "TableArn": "arn:aws:dynamodb:ddblocal:000000000000:table/comment-vibe",
         "BillingModeSummary": {
             "BillingMode": "PAY_PER_REQUEST",
-            "LastUpdateToPayPerRequestDateTime": "2022-09-02T14:22:51.954000+10:00"
+            "LastUpdateToPayPerRequestDateTime": "2022-09-02T15:11:23.509000+10:00"
         }
     }
 }
