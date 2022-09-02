@@ -20,6 +20,10 @@ yarn install
 DYNAMODB_TABLE_NAME=MyDevelopmentTable node src/local.js
 ```
 
+## Issues Introduced
+
+- DynamoDB table name is hardcoded -- if engineer wanted to set up multiple environments this would be a problem
+
 ## DynamoDB Local
 
 Start up local DynamoDB Local container with:
@@ -33,7 +37,7 @@ Create table within DynamoDB Local with:
 ```sh
 ❯ aws dynamodb --endpoint http://localhost:8000 create-table --cli-input-json '
 {
-  "TableName":"local-testing",
+  "TableName":"comment-vibe",
   "AttributeDefinitions":[
     {
       "AttributeName":"id",

@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 
 app.get("/list", async (req, res) => {
   const command = new ScanCommand({
-    TableName: process.env["DYNAMODB_TABLE_NAME"],
+    TableName: "comment-vibe",
   });
 
   const response = await dynamodb.send(command);
@@ -50,7 +50,7 @@ app.post("/add", async (req, res) => {
   };
 
   const command = new PutItemCommand({
-    TableName: process.env["DYNAMODB_TABLE_NAME"],
+    TableName: "comment-vibe",
     Item: {
       id: { N: record.id },
       datetime: { S: record.datetime },
