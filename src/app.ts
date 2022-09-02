@@ -32,20 +32,20 @@ const createApp = () => {
     res.json({
       action: "list",
       records: items.map((item) => ({
-        id: item.id.S,
+        id: item.pk.S,
+        datetime: item.sk.S,
         content: item.content.S,
-        datetime: item.datetime.S,
         sentiment: item.sentiment.N,
       })),
       count: response["Count"],
     });
   });
 
-  app.post("/add", async (req, res) => {
+  app.post("/add/:surveyId", async (req, res) => {
     const analysis = sentiment.analyze(req.body.content);
 
     const record = {
-      id: Date.now(),
+      id: req.params.surveyId,
       datetime: new Date().toISOString(),
       content: req.body.content,
       sentiment: analysis.score,
@@ -54,8 +54,8 @@ const createApp = () => {
     const command = new PutItemCommand({
       TableName: "comment-vibe",
       Item: {
-        id: { N: record.id.toString() },
-        datetime: { S: record.datetime },
+        pk: { S: record.id },
+        sk: { S: record.datetime },
         content: { S: record.content },
         sentiment: { N: record.sentiment.toString() },
       },
