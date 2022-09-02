@@ -1,45 +1,65 @@
 const express = require("express");
-const aws = require("aws-sdk");
+const Sentiment = require("sentiment");
+const {
+  DynamoDBClient,
+  ScanCommand,
+  PutItemCommand,
+} = require("@aws-sdk/client-dynamodb");
+const { createAWSOptions } = require("./aws");
 
-const dynamo = new aws.DynamoDB();
+const options = createAWSOptions();
+const dynamodb = new DynamoDBClient(options);
+
+const sentiment = new Sentiment();
+
 const app = express();
+
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.json({ message: "OK!" });
 });
 
 app.get("/list", async (req, res) => {
-  const response = await dynamo
-    .scan({
-      TableName: process.env["DYNAMODB_TABLE_NAME"],
-    })
-    .promise();
+  const command = new ScanCommand({
+    TableName: process.env["DYNAMODB_TABLE_NAME"],
+  });
+
+  const response = await dynamodb.send(command);
 
   res.json({
     action: "list",
     records: response["Items"].map((item) => ({
       id: item.id.S,
+      content: item.content.S,
       datetime: item.datetime.S,
+      sentiment: item.sentiment.N,
     })),
     count: response["Count"],
   });
 });
 
-app.get("/add/:id", async (req, res) => {
+app.post("/add", async (req, res) => {
+  const analysis = sentiment.analyze(req.body.content);
+
   const record = {
-    id: req.params.id,
+    id: Date.now(),
     datetime: new Date().toISOString(),
+    content: req.body.content,
+    sentiment: analysis.score,
   };
 
-  const response = await dynamo
-    .putItem({
-      TableName: process.env["DYNAMODB_TABLE_NAME"],
-      Item: {
-        id: { S: record.id },
-        datetime: { S: record.datetime },
-      },
-    })
-    .promise();
+  const command = new PutItemCommand({
+    TableName: process.env["DYNAMODB_TABLE_NAME"],
+    Item: {
+      id: { N: record.id },
+      datetime: { S: record.datetime },
+      content: { S: record.content },
+      sentiment: { N: record.sentiment },
+    },
+  });
+
+  await dynamodb.send(command);
 
   res.json({
     action: "add",
