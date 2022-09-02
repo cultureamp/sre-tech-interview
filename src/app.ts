@@ -2,8 +2,8 @@ import * as express from "express";
 import * as Sentiment from "sentiment";
 import {
   DynamoDBClient,
-  ScanCommand,
   PutItemCommand,
+  QueryCommand,
 } from "@aws-sdk/client-dynamodb";
 import { createAWSOptions } from "./aws";
 
@@ -21,23 +21,56 @@ const createApp = () => {
     res.json({ message: "OK!" });
   });
 
-  app.get("/list", async (req, res) => {
-    const command = new ScanCommand({
+  app.get("/report/:surveyId", async (req, res) => {
+    const surveyId = req.params.surveyId;
+    const command = new QueryCommand({
       TableName: "comment-vibe",
+      KeyConditionExpression: "pk = :surveyId",
+      ExpressionAttributeValues: {
+        ":surveyId": {
+          S: req.params.surveyId,
+        },
+      },
     });
 
     const response = await dynamodb.send(command);
     const items = response["Items"] ?? [];
 
+    const records = items.map((item) => ({
+      id: item.pk.S as string,
+      datetime: item.sk.S as string,
+      content: item.content.S as string,
+      sentiment: item.sentiment.N as string,
+    }));
+
+    records.sort((a, b) => (a.datetime < b.datetime ? -1 : 1));
+
+    let [positiveCount, negativeCount, neutralCount, totalSentiment] = [
+      0, 0, 0, 0,
+    ];
+    for (const record of records) {
+      const sentiment = Number.parseInt(record.sentiment);
+      totalSentiment += sentiment;
+      if (sentiment < -1) {
+        negativeCount += 1;
+      } else if (sentiment > 1) {
+        positiveCount += 1;
+      } else {
+        neutralCount += 1;
+      }
+    }
+
+    const averageSentiment = totalSentiment / records.length;
+
     res.json({
-      action: "list",
-      records: items.map((item) => ({
-        id: item.pk.S,
-        datetime: item.sk.S,
-        content: item.content.S,
-        sentiment: item.sentiment.N,
-      })),
-      count: response["Count"],
+      action: "report",
+      data: {
+        surveyId,
+        positiveCount,
+        negativeCount,
+        neutralCount,
+        averageSentiment,
+      },
     });
   });
 
@@ -65,7 +98,7 @@ const createApp = () => {
 
     res.json({
       action: "add",
-      record: record,
+      data: record,
     });
   });
 
