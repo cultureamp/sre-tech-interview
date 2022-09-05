@@ -9,3 +9,5 @@ services:
   app:
     build: .
     command: .dist/index.js
+    ports:
+      - 9000:8080
