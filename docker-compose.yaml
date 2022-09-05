@@ -5,3 +5,7 @@ services:
     command: -jar DynamoDBLocal.jar -sharedDb
     ports:
       - 8000:8000
+
+  app:
+    build: .
+    command: .dist/index.js
