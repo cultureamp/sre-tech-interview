@@ -29,7 +29,7 @@ DYNAMODB_TABLE_NAME=MyDevelopmentTable node src/local.js
 Start up local DynamoDB Local container with:
 
 ```
-docker run --name dynamodb -p 8000:8000 -d amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb
+docker compose up -d
 ```
 
 Create table within DynamoDB Local with:
