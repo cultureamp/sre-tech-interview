@@ -2,7 +2,7 @@
   "name": "cultureamp-technical-interview",
   "version": "1.0.0",
   "description": "Example code for interview",
-  "main": "src/index.js",
+  "main": ".dist/index.js",
   "license": "MIT",
   "scripts": {
     "build": "tsc",
