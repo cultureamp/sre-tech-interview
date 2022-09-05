@@ -20,6 +20,12 @@ yarn install
 DYNAMODB_TABLE_NAME=MyDevelopmentTable node src/local.js
 ```
 
+## Running local
+
+```
+IS_LOCAL=true yarn start
+```
+
 ## Issues Introduced
 
 - DynamoDB table name is hardcoded -- if engineer wanted to set up multiple environments this would be a problem
