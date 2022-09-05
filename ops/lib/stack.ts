@@ -3,7 +3,7 @@ import { Construct } from "constructs";
 import { DockerImageCode, DockerImageFunction } from "aws-cdk-lib/aws-lambda";
 import { AttributeType, BillingMode, Table } from "aws-cdk-lib/aws-dynamodb";
 
-export class Stack extends cdk.Stack {
+export class ApplicationStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
