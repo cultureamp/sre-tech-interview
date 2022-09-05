@@ -18,7 +18,7 @@ const createApp = () => {
   app.use(express.json());
 
   app.get("/", (req, res) => {
-    res.json({ message: "OK!" });
+    res.json({ message: "ok" });
   });
 
   app.get("/report/:surveyId", async (req, res) => {
@@ -99,6 +99,12 @@ const createApp = () => {
     res.json({
       action: "add",
       data: record,
+    });
+  });
+
+  app.use((req, res) => {
+    res.status(404).json({
+      message: "not found",
     });
   });
 
