@@ -10,6 +10,16 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
+"@aws-cdk/aws-apigatewayv2-alpha@^2.40.0-alpha.0":
+  version "2.40.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-apigatewayv2-alpha/-/aws-apigatewayv2-alpha-2.40.0-alpha.0.tgz#8ad9981ac71da45ece1993eb8ced98a9674ba81a"
+  integrity sha512-VetlaG+IoiFNk3LwUPbivHIHVe0d6DtKMPcKDlW12sH+BGN/clYzp8gBHr4aNXq2+aGQ/BfT3qI8ZVWOLXK5vg==
+
+"@aws-cdk/aws-apigatewayv2-integrations-alpha@^2.40.0-alpha.0":
+  version "2.40.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-apigatewayv2-integrations-alpha/-/aws-apigatewayv2-integrations-alpha-2.40.0-alpha.0.tgz#4c3143a6b66623521ea98cc727a9b0bde66f5221"
+  integrity sha512-ryTaaIZxyE1Z8HD7ByUQn9SB8hsu2pk0NxR26uqYZHvVK9unplpBq7HpBD3ngz3B3WRY2BXBxq6mHBsUtiP+lg==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.18.6":
   version "7.18.6"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.18.6.tgz#3b25d38c89600baa2dcc219edfa88a74eb2c427a"
