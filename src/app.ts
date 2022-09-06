@@ -74,7 +74,7 @@ const createApp = () => {
     });
   });
 
-  app.post("/add/:surveyId", async (req, res) => {
+  app.post("/comment/:surveyId", async (req, res) => {
     const analysis = sentiment.analyze(req.body.content);
 
     const record = {
