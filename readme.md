@@ -1,17 +1,48 @@
-# Culture Amp Technical Interview Code
+# Comment Vibe API (Culture Amp SRE Technical Interview Code)
+
+> Welcome to the Culture Amp SRE Technical Interview code repository. This simple API and deployment IAC is the material we use to collaborate on with interviewees.
+
+The Comment Vibe API is a small microservice for calculating sentiment using [AFINN-165](https://www.npmjs.com/package/sentiment) for comments left on surveys.
+
+It exposes an API using API Gateway V2 and AWS Lambda and persists survey comments in a DynamoDB table. The infrastructure is managed and deployed using the AWS CDK
+
+![Comment Vibe API Architecture Diagram](./docs/comment-vibe.svg)
+
+```
+sre-tech-interview
+├── ops                  AWS CDK project for deploying Comment Vibe
+├── src                  Node.js application source code for Comment Vibe
+├── Dockerfile           Builds AWS Lambda container image for Comment Vibe
+├── docker-compose.yaml  Allows for Comment Vibe to be run locally for testing
+├── openapi.yaml         OpenAPI documentation for Comment Vibe
+└── readme.md            This document
+```
+
+## The API
+
+Comment Vibe exposes two endpoints for use. See the [OpenAPI](./openapi.yaml) specification for more complete details.
+
+### Comment on a survey : `POST /comment/:surveyId`
+
+- Receives `surveyId` as parameter in path
+- Receives new comment as JSON in the request body of a `POST` request
+- Calculates `sentiment` field for the comment and saves it into the DynamoDB table
+- Returns the comment with `sentiment` field set
+
+### Reporting on a survey: `GET /report/:surveyId`
+
+- Receives `surveyId` as parameter in path
+- Queries DynamoDB for all comments for the given `surveyId`
+- Buckets them based on `sentiment` and returns a basic report of the survey comments
+
+## Setting up locally
 
 Requirements
 - AWS CLI
-- AWS SAM CLI
 - Node
-- yarn
+- `yarn`
+- Docker
 
-Deploying
-
-```bash
-sam build
-sam deploy --guided
-```
 
 Running locally
 
