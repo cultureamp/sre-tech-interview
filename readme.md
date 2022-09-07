@@ -62,6 +62,27 @@ IS_LOCAL=true yarn start
 - DynamoDB table name is hardcoded. If engineer wanted to set up multiple environments this fixed resource naming would be a problem
 - Node.js code is unfactored. `app.ts` contains (1) Express.js routing setup, (2) business logic of the endpoints, and (3) persistence layer logic of interacting with DynamoDB
 
+## Lambda runtime local
+
+Example minimal request JSON for API Gateway v2 payload. See this [reference](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) for a complete example.
+
+```sh
+curl -X POST http://localhost:9000/2015-03-31/functions/function/invocations -d '
+{
+  "version": "2.0",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "rawPath": "/comment/my-survey",
+  "body": "Hello from Lambda",
+  "requestContext": {
+    "http": {
+      "method": "POST"
+    }
+  }
+}'
+```
+
 ## DynamoDB Local
 
 Start up local DynamoDB Local container with:
