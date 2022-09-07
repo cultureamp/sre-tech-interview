@@ -77,21 +77,21 @@ Create table within DynamoDB Local with:
   "TableName":"comment-vibe",
   "AttributeDefinitions":[
     {
-      "AttributeName":"pk",
+      "AttributeName":"surveyId",
       "AttributeType":"S"
     },
     {
-      "AttributeName":"sk",
+      "AttributeName":"datetime",
       "AttributeType":"S"
     }
   ],
   "KeySchema":[
     {
-      "AttributeName":"pk",
+      "AttributeName":"surveyId",
       "KeyType":"HASH"
     },
     {
-      "AttributeName":"sk",
+      "AttributeName":"datetime",
       "KeyType":"RANGE"
     }
   ],
@@ -103,22 +103,22 @@ Create table within DynamoDB Local with:
     "TableDescription": {
         "AttributeDefinitions": [
             {
-                "AttributeName": "pk",
+                "AttributeName": "surveyId",
                 "AttributeType": "S"
             },
             {
-                "AttributeName": "sk",
+                "AttributeName": "datetime",
                 "AttributeType": "S"
             }
         ],
         "TableName": "comment-vibe",
         "KeySchema": [
             {
-                "AttributeName": "pk",
+                "AttributeName": "surveyId",
                 "KeyType": "HASH"
             },
             {
-                "AttributeName": "sk",
+                "AttributeName": "datetime",
                 "KeyType": "RANGE"
             }
         ],

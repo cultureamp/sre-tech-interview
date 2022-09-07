@@ -17,8 +17,8 @@ export class ApplicationStack extends cdk.Stack {
 
     const table = new Table(this, "DynamoTable", {
       tableName: "comment-vibe",
-      partitionKey: { name: "pk", type: AttributeType.STRING },
-      sortKey: { name: "sk", type: AttributeType.STRING },
+      partitionKey: { name: "surveyId", type: AttributeType.STRING },
+      sortKey: { name: "datetime", type: AttributeType.STRING },
       billingMode: BillingMode.PAY_PER_REQUEST,
     });
 

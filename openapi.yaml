@@ -74,11 +74,11 @@ components:
     Comment:
       type: object
       required:
-        - id
+        - surveyId
         - datetime
         - content
       properties:
-        id:
+        surveyId:
           type: string
           description: Survey ID this comment is attached to
         datetime:

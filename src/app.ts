@@ -25,7 +25,7 @@ const createApp = () => {
     const surveyId = req.params.surveyId;
     const command = new QueryCommand({
       TableName: "comment-vibe",
-      KeyConditionExpression: "pk = :surveyId",
+      KeyConditionExpression: "surveyId = :surveyId",
       ExpressionAttributeValues: {
         ":surveyId": {
           S: req.params.surveyId,
@@ -37,8 +37,8 @@ const createApp = () => {
     const items = response["Items"] ?? [];
 
     const records = items.map((item) => ({
-      id: item.pk.S as string,
-      datetime: item.sk.S as string,
+      surveyId: item.surveyId.S as string,
+      datetime: item.datetime.S as string,
       content: item.content.S as string,
       sentiment: item.sentiment.N as string,
     }));
@@ -78,7 +78,7 @@ const createApp = () => {
     const analysis = sentiment.analyze(req.body.content);
 
     const record = {
-      id: req.params.surveyId,
+      surveyId: req.params.surveyId,
       datetime: new Date().toISOString(),
       content: req.body.content,
       sentiment: analysis.score,
@@ -87,8 +87,8 @@ const createApp = () => {
     const command = new PutItemCommand({
       TableName: "comment-vibe",
       Item: {
-        pk: { S: record.id },
-        sk: { S: record.datetime },
+        surveyId: { S: record.surveyId },
+        datetime: { S: record.datetime },
         content: { S: record.content },
         sentiment: { N: record.sentiment.toString() },
       },

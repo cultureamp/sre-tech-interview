@@ -15,22 +15,22 @@ Object {
       "Properties": Object {
         "AttributeDefinitions": Array [
           Object {
-            "AttributeName": "pk",
+            "AttributeName": "surveyId",
             "AttributeType": "S",
           },
           Object {
-            "AttributeName": "sk",
+            "AttributeName": "datetime",
             "AttributeType": "S",
           },
         ],
         "BillingMode": "PAY_PER_REQUEST",
         "KeySchema": Array [
           Object {
-            "AttributeName": "pk",
+            "AttributeName": "surveyId",
             "KeyType": "HASH",
           },
           Object {
-            "AttributeName": "sk",
+            "AttributeName": "datetime",
             "KeyType": "RANGE",
           },
         ],
@@ -138,7 +138,7 @@ Object {
       "Properties": Object {
         "Code": Object {
           "ImageUri": Object {
-            "Fn::Sub": "\${AWS::AccountId}.dkr.ecr.\${AWS::Region}.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-\${AWS::AccountId}-\${AWS::Region}:b2f422f243856d863aaf21922087b64b08384ab5f2cf7173a111b821cefdd09a",
+            "Fn::Sub": "\${AWS::AccountId}.dkr.ecr.\${AWS::Region}.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-\${AWS::AccountId}-\${AWS::Region}:119e421eefc54ef35749bab76209ae2576110fbfb5e89bd187961f1bdbc08fe1",
           },
         },
         "PackageType": "Image",
