@@ -59,7 +59,8 @@ IS_LOCAL=true yarn start
 
 ## Issues Introduced
 
-- DynamoDB table name is hardcoded -- if engineer wanted to set up multiple environments this would be a problem
+- DynamoDB table name is hardcoded. If engineer wanted to set up multiple environments this fixed resource naming would be a problem
+- Node.js code is unfactored. `app.ts` contains (1) Express.js routing setup, (2) business logic of the endpoints, and (3) persistence layer logic of interacting with DynamoDB
 
 ## DynamoDB Local
 
