@@ -37,59 +37,22 @@ Comment Vibe exposes two endpoints for use. See the [OpenAPI](./openapi.yaml) sp
 
 ## Setting up locally
 
-Requirements
+Requirements to run in Docker
 - AWS CLI
-- Node
-- `yarn`
 - Docker
 
-
-Running locally
-
-```bash
-yarn install
-DYNAMODB_TABLE_NAME=MyDevelopmentTable node src/local.js
-```
-
-## Running local
+Build images with
 
 ```
-IS_LOCAL=true yarn start
+docker compose build
 ```
 
-## Issues Introduced
-
-- DynamoDB table name is hardcoded. If engineer wanted to set up multiple environments this fixed resource naming would be a problem
-- Node.js code is unfactored. `app.ts` contains (1) Express.js routing setup, (2) business logic of the endpoints, and (3) persistence layer logic of interacting with DynamoDB
-
-## Lambda runtime local
-
-Example minimal request JSON for API Gateway v2 payload. See this [reference](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) for a complete example.
-
-```sh
-curl -X POST http://localhost:9000/2015-03-31/functions/function/invocations -d '
-{
-  "version": "2.0",
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "rawPath": "/comment/my-survey",
-  "body": "Hello from Lambda",
-  "requestContext": {
-    "http": {
-      "method": "POST"
-    }
-  }
-}'
-```
-
-## DynamoDB Local
-
-Start up local DynamoDB Local container with:
+Run local containers with
 
 ```
-docker compose up -d
+docker compose up
 ```
+
 
 Create table within DynamoDB Local with:
 
@@ -163,3 +126,61 @@ Create table within DynamoDB Local with:
     }
 }
 ```
+
+Requirements to run application locally
+- Node 16
+- `yarn`
+
+Install dependencies
+
+```
+yarn install
+```
+
+Run Express.js app locally
+
+```bash
+yarn start
+```
+
+## Sending requests to Lambda runtime locally
+
+Example minimal request JSON for API Gateway v2 payload below. See this [reference](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) for a complete example.
+
+```sh
+# adding a comment
+curl -X POST http://localhost:9000/2015-03-31/functions/function/invocations -d '
+{
+  "version": "2.0",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "rawPath": "/comment/my-survey",
+  "body": "{\"content\":\"This survey was good.\"}",
+  "requestContext": {
+    "http": {
+      "method": "POST"
+    }
+  }
+}'
+
+# reporting on a survey
+curl -X POST http://localhost:9000/2015-03-31/functions/function/invocations -d '
+{
+  "version": "2.0",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "rawPath": "/report/my-survey",
+  "requestContext": {
+    "http": {
+      "method": "GET"
+    }
+  }
+}'
+```
+
+## Issues Introduced
+
+- DynamoDB table name is hardcoded. If engineer wanted to set up multiple environments this fixed resource naming would be a problem
+- Node.js code is unfactored. `app.ts` contains (1) Express.js routing setup, (2) business logic of the endpoints, and (3) persistence layer logic of interacting with DynamoDB
