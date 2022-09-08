@@ -1,0 +1,24 @@
+{
+  "TableName": "comment-vibe",
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "surveyId",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "datetime",
+      "AttributeType": "S"
+    }
+  ],
+  "KeySchema": [
+    {
+      "AttributeName": "surveyId",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "datetime",
+      "KeyType": "RANGE"
+    }
+  ],
+  "BillingMode": "PAY_PER_REQUEST"
+}

@@ -6,6 +6,16 @@ services:
     ports:
       - 8000:8000
 
+  dynamodb-create-table:
+    image: amazon/aws-cli
+    depends_on:
+      - dynamodb
+    entrypoint: /bin/sh
+    command: create-table.sh
+    working_dir: /app
+    volumes:
+      - ./dynamodb:/app
+
   lambda:
     build: .
     ports:

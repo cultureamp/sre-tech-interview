@@ -53,79 +53,9 @@ Run local containers with
 docker compose up
 ```
 
+A container within the Docker Compose will create the required table within DynamoDB Local.
 
-Create table within DynamoDB Local with:
-
-```sh
-❯ aws dynamodb --endpoint http://localhost:8000 create-table --cli-input-json '
-{
-  "TableName":"comment-vibe",
-  "AttributeDefinitions":[
-    {
-      "AttributeName":"surveyId",
-      "AttributeType":"S"
-    },
-    {
-      "AttributeName":"datetime",
-      "AttributeType":"S"
-    }
-  ],
-  "KeySchema":[
-    {
-      "AttributeName":"surveyId",
-      "KeyType":"HASH"
-    },
-    {
-      "AttributeName":"datetime",
-      "KeyType":"RANGE"
-    }
-  ],
-  "BillingMode":"PAY_PER_REQUEST"
-}'
-
-# example response
-{
-    "TableDescription": {
-        "AttributeDefinitions": [
-            {
-                "AttributeName": "surveyId",
-                "AttributeType": "S"
-            },
-            {
-                "AttributeName": "datetime",
-                "AttributeType": "S"
-            }
-        ],
-        "TableName": "comment-vibe",
-        "KeySchema": [
-            {
-                "AttributeName": "surveyId",
-                "KeyType": "HASH"
-            },
-            {
-                "AttributeName": "datetime",
-                "KeyType": "RANGE"
-            }
-        ],
-        "TableStatus": "ACTIVE",
-        "CreationDateTime": "2022-09-02T15:11:23.509000+10:00",
-        "ProvisionedThroughput": {
-            "LastIncreaseDateTime": "1970-01-01T10:00:00+10:00",
-            "LastDecreaseDateTime": "1970-01-01T10:00:00+10:00",
-            "NumberOfDecreasesToday": 0,
-            "ReadCapacityUnits": 0,
-            "WriteCapacityUnits": 0
-        },
-        "TableSizeBytes": 0,
-        "ItemCount": 0,
-        "TableArn": "arn:aws:dynamodb:ddblocal:000000000000:table/comment-vibe",
-        "BillingModeSummary": {
-            "BillingMode": "PAY_PER_REQUEST",
-            "LastUpdateToPayPerRequestDateTime": "2022-09-02T15:11:23.509000+10:00"
-        }
-    }
-}
-```
+## Running Express.js application locally
 
 Requirements to run application locally
 - Node 16
@@ -142,6 +72,8 @@ Run Express.js app locally
 ```bash
 yarn start
 ```
+
+Express.js app running locally will expect to connect to the DynamoDB Local instance running in Docker Compose.
 
 ## Sending requests to Lambda runtime locally
 
