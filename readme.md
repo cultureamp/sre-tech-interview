@@ -29,12 +29,44 @@ Comment Vibe exposes two endpoints for use. See the [OpenAPI](./openapi.yaml) sp
 - Calculates `sentiment` field for the comment and saves it into the DynamoDB table
 - Returns the comment with `sentiment` field set
 
+```sh
+# example request and response
+
+curl -X POST -H 'Content-Type: application/json' ${HOST}/comment/my-survey -d '{"content":"Today is a good day."}'
+
+{
+  "action": "add",
+  "data": {
+    "surveyId": "my-survey",
+    "datetime": "2022-09-08T22:32:50.515Z",
+    "content": "Today is a good day.",
+    "sentiment": 3
+  }
+}
+```
+
 ### Reporting on a survey: `GET /report/:surveyId`
 
 - Receives `surveyId` as parameter in path
 - Queries DynamoDB for all comments for the given `surveyId`
 - Buckets them based on `sentiment` and returns a basic report of the survey comments
 
+```sh
+# example request and response
+
+curl -X GET -H 'Content-Type: application/json' ${HOST}/report/my-survey
+
+{
+  "action": "report",
+  "data": {
+    "surveyId": "my-survey",
+    "positiveCount": 1,
+    "negativeCount": 0,
+    "neutralCount": 0,
+    "averageSentiment": 3
+  }
+}
+```
 ## Setting up locally
 
 Requirements to run in Docker
