@@ -1,7 +1,25 @@
 #!/usr/bin/env node
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
-import { ApplicationStack } from "../lib/stack";
+import { DockerImageCode, DockerImageFunction } from "aws-cdk-lib/aws-lambda";
+import { AttributeType, BillingMode, Table } from "aws-cdk-lib/aws-dynamodb";
+import { HttpApi } from "@aws-cdk/aws-apigatewayv2-alpha";
+import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 
 const app = new cdk.App();
-new ApplicationStack(app, "comment-vibe");
+export const stack = new cdk.Stack(app, "comment-vibe");
+
+const code = DockerImageCode.fromImageAsset(`${__dirname}/../..`);
+const lambda = new DockerImageFunction(stack, "Lambda", {
+  code,
+});
+const table = new Table(stack, "DynamoTable", {
+  tableName: "comment-vibe",
+  partitionKey: { name: "surveyId", type: AttributeType.STRING },
+  sortKey: { name: "datetime", type: AttributeType.STRING },
+  billingMode: BillingMode.PAY_PER_REQUEST,
+});
+table.grantReadWriteData(lambda);
+new HttpApi(stack, "HttpApi", {
+  defaultIntegration: new HttpLambdaIntegration("HttpLambda", lambda),
+});

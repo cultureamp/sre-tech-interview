@@ -138,7 +138,7 @@ Object {
       "Properties": Object {
         "Code": Object {
           "ImageUri": Object {
-            "Fn::Sub": "\${AWS::AccountId}.dkr.ecr.\${AWS::Region}.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-\${AWS::AccountId}-\${AWS::Region}:119e421eefc54ef35749bab76209ae2576110fbfb5e89bd187961f1bdbc08fe1",
+            "Fn::Sub": "\${AWS::AccountId}.dkr.ecr.\${AWS::Region}.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-\${AWS::AccountId}-\${AWS::Region}:917aa3c28f2820320c9b41346a1ec7d34eb89975c6e2095ebdf7e742f504deb5",
           },
         },
         "PackageType": "Image",
