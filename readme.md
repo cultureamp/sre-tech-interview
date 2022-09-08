@@ -67,49 +67,33 @@ curl -X GET -H 'Content-Type: application/json' ${HOST}/report/my-survey
   }
 }
 ```
+
 ## Setting up locally
 
+Comment Vibe can be run locally using Docker to imitate the AWS Lambda and DynamoDB infrastructure.
+
 Requirements to run in Docker
-- AWS CLI
 - Docker
 
 Build images with
 
 ```
-docker compose build
+❯ docker compose build
 ```
 
 Run local containers with
 
 ```
-docker compose up
+❯ docker compose up
 ```
 
-A container within the Docker Compose will create the required table within DynamoDB Local.
+### Creating the DynamoDB table in DynamoDB Local
 
-## Running Express.js application locally
+A container within the Docker Compose will create the required table within DynamoDB Local automatically. Check the logs for the `create-table` container if you have issues with the table.
 
-Requirements to run application locally
-- Node 16
-- `yarn`
+### Sending requests to local Lambda container
 
-Install dependencies
-
-```
-yarn install
-```
-
-Run Express.js app locally
-
-```bash
-yarn start
-```
-
-Express.js app running locally will expect to connect to the DynamoDB Local instance running in Docker Compose.
-
-## Sending requests to Lambda runtime locally
-
-Example minimal request JSON for API Gateway v2 payload below. See this [reference](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) for a complete example.
+The Lambda container expects to receive an AWS API Gateway v2 payload. See below for an example minimal request JSON for wrapping up a Comment Vibe request. See this [reference](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) for a complete example.
 
 ```sh
 # adding a comment
@@ -143,3 +127,35 @@ curl -X POST http://localhost:9000/2015-03-31/functions/function/invocations -d 
   }
 }'
 ```
+
+
+## Running Express.js application locally
+
+The Express.js application for Comment Vibe can also be run locally without Docker which provides a faster iteration loop for development.
+
+Requirements to run application locally:
+- Node 16
+- `yarn`
+
+Install dependencies
+
+```
+❯ yarn install
+```
+
+Run Express.js app locally
+
+```sh
+❯ yarn start
+yarn run v1.22.15
+$ dotenv ts-node src/local.ts
+Server started on port 3000
+```
+
+### Connecting to DynamoDB from local Express.js
+
+Express.js app running locally will expect to connect to the DynamoDB Local instance running in Docker Compose.
+
+### Sending requests to local Express.js
+
+The Express.js app expects to receive the Comment Vibe request JSON directly. See the API documentation earlier in this document.
