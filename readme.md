@@ -159,3 +159,39 @@ Express.js app running locally will expect to connect to the DynamoDB Local inst
 ### Sending requests to local Express.js
 
 The Express.js app expects to receive the Comment Vibe request JSON directly. See the API documentation earlier in this document.
+
+## Deploying to AWS with the CDK application
+
+Requirements to run the CDK application:
+- Node 16
+- `yarn`
+
+The CDK application is located in the `ops` directory
+
+```
+❯ cd ops
+```
+
+Install dependencies
+
+```
+❯ yarn install
+```
+
+Run Jest tests
+
+```
+❯ yarn test
+```
+
+Synth CloudFormation stack
+
+```
+❯ yarn cdk synth
+```
+
+Deploy the CloudFormation stack (the CDK app will use any valid credentials available in your terminal session)
+
+```
+❯ yarn cdk deploy
+```
