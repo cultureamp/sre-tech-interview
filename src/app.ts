@@ -28,28 +28,31 @@ const createApp = () => {
 
       console.log(analysis);
 
-      const record = {
+      const comment = {
         surveyId: req.params.surveyId,
         datetime: new Date().toISOString(),
         content: req.body.content,
         sentiment: analysis.score,
       };
 
+      // DynamoDB has a specific schema for representing attributes
+      const dynamoItem = {
+        surveyId: { S: comment.surveyId },
+        datetime: { S: comment.datetime },
+        content: { S: comment.content },
+        sentiment: { N: comment.sentiment.toString() },
+      };
+
       const command = new PutItemCommand({
         TableName: "comment-vibe",
-        Item: {
-          surveyId: { S: record.surveyId },
-          datetime: { S: record.datetime },
-          content: { S: record.content },
-          sentiment: { N: record.sentiment.toString() },
-        },
+        Item: dynamoItem,
       });
 
       await dynamodb.send(command);
 
       res.json({
         action: "add",
-        data: record,
+        data: comment,
       });
     } catch (err) {
       next(err); // pass any async errors that occur to Express error handling
@@ -59,6 +62,8 @@ const createApp = () => {
   app.get("/report/:surveyId", async (req, res, next) => {
     try {
       const surveyId = req.params.surveyId;
+
+      // Comment explaining necessary
       const command = new QueryCommand({
         TableName: "comment-vibe",
         KeyConditionExpression: "surveyId = :surveyId",
@@ -72,7 +77,7 @@ const createApp = () => {
       const response = await dynamodb.send(command);
       const items = response["Items"] ?? [];
 
-      const records = items.map((item) => ({
+      const comments = items.map((item) => ({
         surveyId: item.surveyId.S as string,
         datetime: item.datetime.S as string,
         content: item.content.S as string,
@@ -82,8 +87,8 @@ const createApp = () => {
       let [positiveCount, negativeCount, neutralCount, totalSentiment] = [
         0, 0, 0, 0,
       ];
-      for (const record of records) {
-        const sentiment = Number.parseInt(record.sentiment);
+      for (const comment of comments) {
+        const sentiment = Number.parseInt(comment.sentiment);
         totalSentiment += sentiment;
         if (sentiment < -1) {
           negativeCount += 1;
@@ -94,7 +99,7 @@ const createApp = () => {
         }
       }
 
-      const averageSentiment = totalSentiment / records.length;
+      const averageSentiment = totalSentiment / comments.length;
 
       res.json({
         action: "report",
