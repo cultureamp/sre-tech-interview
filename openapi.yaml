@@ -1,0 +1,92 @@
+openapi: "3.1.0"
+info:
+  version: 0.1.0
+  title: Comment Vibe API
+paths:
+  /comment/{surveyId}:
+    post:
+      summary: Submit comment to survey
+      operationId: comment
+      parameters:
+        - name: surveyId
+          in: query
+          description: The Survey ID to attach comment to
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: New comment as JSON, without sentiment
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comment"
+        required: true
+      responses:
+        "200":
+          description: Returns the comment with sentiment attached
+          content:
+            application/json:
+              type: object
+              properties:
+                action: add
+                data:
+                  schema:
+                    $ref: "#/components/schemas/Comment"
+  /report/{surveyId}:
+    get:
+      summary: Report sentiment summary for survey
+      operationId: report
+      parameters:
+        - name: surveyId
+          in: query
+          description: The Survey ID to report on
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Comment sentiment report
+          content:
+            application/json:
+              type: object
+              properties:
+                action: report
+                data:
+                  type: object
+                  properties:
+                    surveyId:
+                      type: string
+                      description: Survey ID for this report
+                    positiveCount:
+                      type: number
+                      description: Number of survey comments with sentiment > 1
+                    negativeCount:
+                      type: number
+                      description: Number of survey comments with sentiment < -1
+                    neutralCount:
+                      type: number
+                      description: Number of survey comments with -1 < sentiment < 1
+                    averageSentiment:
+                      type: number
+                      description: Average sentiment value of comments in this survey
+components:
+  schemas:
+    Comment:
+      type: object
+      required:
+        - surveyId
+        - datetime
+        - content
+      properties:
+        surveyId:
+          type: string
+          description: Survey ID this comment is attached to
+        datetime:
+          type: string
+          description: Timestamp of when this comment was submitted. ISO format.
+        content:
+          type: string
+          description: Comment text
+        sentiment:
+          type: number
+          description: Sentiment rating from -5 (negative) to 5 (positive) as calculated by AFINN-165. See https://www.npmjs.com/package/afinn-165

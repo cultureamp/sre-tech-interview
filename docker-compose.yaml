@@ -1,0 +1,25 @@
+version: "3"
+services:
+  dynamodb:
+    image: amazon/dynamodb-local
+    command: -jar DynamoDBLocal.jar -sharedDb
+    ports:
+      - 8000:8000
+
+  dynamodb-create-table:
+    image: amazon/aws-cli
+    depends_on:
+      - dynamodb
+    entrypoint: /bin/sh
+    command: create-table.sh
+    working_dir: /app
+    volumes:
+      - ./dynamodb:/app
+
+  lambda:
+    build: .
+    ports:
+      - 9000:8080
+    environment:
+      IS_LOCAL: true
+      DYNAMODB_ENDPOINT: dynamodb

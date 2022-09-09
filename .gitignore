@@ -1,2 +1,6 @@
 .aws-sam
 node_modules
+*.js
+!jest.config.js
+*.d.ts
+.dist
