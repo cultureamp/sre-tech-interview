@@ -22,6 +22,40 @@ const createApp = () => {
     res.json({ message: "ok" });
   });
 
+  app.post("/comment/:surveyId", async (req, res, next) => {
+    try {
+      const analysis = sentiment.analyze(req.body.content);
+
+      console.log(analysis);
+
+      const record = {
+        surveyId: req.params.surveyId,
+        datetime: new Date().toISOString(),
+        content: req.body.content,
+        sentiment: analysis.score,
+      };
+
+      const command = new PutItemCommand({
+        TableName: "comment-vibe",
+        Item: {
+          surveyId: { S: record.surveyId },
+          datetime: { S: record.datetime },
+          content: { S: record.content },
+          sentiment: { N: record.sentiment.toString() },
+        },
+      });
+
+      await dynamodb.send(command);
+
+      res.json({
+        action: "add",
+        data: record,
+      });
+    } catch (err) {
+      next(err); // pass any async errors that occur to Express error handling
+    }
+  });
+
   app.get("/report/:surveyId", async (req, res, next) => {
     try {
       const surveyId = req.params.surveyId;
@@ -73,38 +107,6 @@ const createApp = () => {
           neutralCount,
           averageSentiment,
         },
-      });
-    } catch (err) {
-      next(err); // pass any async errors that occur to Express error handling
-    }
-  });
-
-  app.post("/comment/:surveyId", async (req, res, next) => {
-    try {
-      const analysis = sentiment.analyze(req.body.content);
-
-      const record = {
-        surveyId: req.params.surveyId,
-        datetime: new Date().toISOString(),
-        content: req.body.content,
-        sentiment: analysis.score,
-      };
-
-      const command = new PutItemCommand({
-        TableName: "comment-vibe",
-        Item: {
-          surveyId: { S: record.surveyId },
-          datetime: { S: record.datetime },
-          content: { S: record.content },
-          sentiment: { N: record.sentiment.toString() },
-        },
-      });
-
-      await dynamodb.send(command);
-
-      res.json({
-        action: "add",
-        data: record,
       });
     } catch (err) {
       next(err); // pass any async errors that occur to Express error handling
