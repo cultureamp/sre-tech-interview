@@ -79,8 +79,6 @@ const createApp = () => {
         sentiment: item.sentiment.N as string,
       }));
 
-      records.sort((a, b) => (a.datetime < b.datetime ? -1 : 1));
-
       let [positiveCount, negativeCount, neutralCount, totalSentiment] = [
         0, 0, 0, 0,
       ];
