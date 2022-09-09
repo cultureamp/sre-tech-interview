@@ -22,9 +22,49 @@ const createApp = () => {
     res.json({ message: "ok" });
   });
 
+  app.post("/comment/:surveyId", async (req, res, next) => {
+    try {
+      const analysis = sentiment.analyze(req.body.content);
+
+      console.log(analysis);
+
+      const comment = {
+        surveyId: req.params.surveyId,
+        datetime: new Date().toISOString(),
+        content: req.body.content,
+        sentiment: analysis.score,
+      };
+
+      // DynamoDB has a specific schema for representing attributes
+      const dynamoItem = {
+        surveyId: { S: comment.surveyId },
+        datetime: { S: comment.datetime },
+        content: { S: comment.content },
+        sentiment: { N: comment.sentiment.toString() },
+      };
+
+      const command = new PutItemCommand({
+        TableName: "comment-vibe",
+        Item: dynamoItem,
+      });
+
+      await dynamodb.send(command);
+
+      res.json({
+        action: "add",
+        data: comment,
+      });
+    } catch (err) {
+      next(err); // pass any async errors that occur to Express error handling
+    }
+  });
+
   app.get("/report/:surveyId", async (req, res, next) => {
     try {
       const surveyId = req.params.surveyId;
+
+      // Construct query for DynamoDB that finds all comments
+      // where the primary key matches the surveyId path parameter
       const command = new QueryCommand({
         TableName: "comment-vibe",
         KeyConditionExpression: "surveyId = :surveyId",
@@ -38,20 +78,18 @@ const createApp = () => {
       const response = await dynamodb.send(command);
       const items = response["Items"] ?? [];
 
-      const records = items.map((item) => ({
+      const comments = items.map((item) => ({
         surveyId: item.surveyId.S as string,
         datetime: item.datetime.S as string,
         content: item.content.S as string,
         sentiment: item.sentiment.N as string,
       }));
 
-      records.sort((a, b) => (a.datetime < b.datetime ? -1 : 1));
-
       let [positiveCount, negativeCount, neutralCount, totalSentiment] = [
         0, 0, 0, 0,
       ];
-      for (const record of records) {
-        const sentiment = Number.parseInt(record.sentiment);
+      for (const comment of comments) {
+        const sentiment = Number.parseInt(comment.sentiment);
         totalSentiment += sentiment;
         if (sentiment < -1) {
           negativeCount += 1;
@@ -62,7 +100,7 @@ const createApp = () => {
         }
       }
 
-      const averageSentiment = totalSentiment / records.length;
+      const averageSentiment = totalSentiment / comments.length;
 
       res.json({
         action: "report",
@@ -73,38 +111,6 @@ const createApp = () => {
           neutralCount,
           averageSentiment,
         },
-      });
-    } catch (err) {
-      next(err); // pass any async errors that occur to Express error handling
-    }
-  });
-
-  app.post("/comment/:surveyId", async (req, res, next) => {
-    try {
-      const analysis = sentiment.analyze(req.body.content);
-
-      const record = {
-        surveyId: req.params.surveyId,
-        datetime: new Date().toISOString(),
-        content: req.body.content,
-        sentiment: analysis.score,
-      };
-
-      const command = new PutItemCommand({
-        TableName: "comment-vibe",
-        Item: {
-          surveyId: { S: record.surveyId },
-          datetime: { S: record.datetime },
-          content: { S: record.content },
-          sentiment: { N: record.sentiment.toString() },
-        },
-      });
-
-      await dynamodb.send(command);
-
-      res.json({
-        action: "add",
-        data: record,
       });
     } catch (err) {
       next(err); // pass any async errors that occur to Express error handling
