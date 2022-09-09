@@ -137,6 +137,8 @@ Requirements to run application locally:
 - Node 16
 - `yarn`
 
+These can be installed using [asdf](https://asdf-vm.com/guide/getting-started.html), which will utilize the versions set in `.tool-versions`.
+
 Install dependencies
 
 ```
@@ -165,6 +167,8 @@ The Express.js app expects to receive the Comment Vibe request JSON directly. Se
 Requirements to run the CDK application:
 - Node 16
 - `yarn`
+
+These can be installed using [asdf](https://asdf-vm.com/guide/getting-started.html), which will utilize the versions set in `.tool-versions`.
 
 The CDK application is located in the `ops` directory
 
