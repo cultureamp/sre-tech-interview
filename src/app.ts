@@ -63,7 +63,8 @@ const createApp = () => {
     try {
       const surveyId = req.params.surveyId;
 
-      // Comment explaining necessary
+      // Construct query for DynamoDB that finds all comments
+      // where the primary key matches the surveyId path parameter
       const command = new QueryCommand({
         TableName: "comment-vibe",
         KeyConditionExpression: "surveyId = :surveyId",
