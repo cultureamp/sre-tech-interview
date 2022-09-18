@@ -22,4 +22,4 @@ services:
       - 9000:8080
     environment:
       IS_LOCAL: true
-      DYNAMODB_ENDPOINT: dynamodb
+      DYNAMODB_HOST: dynamodb
