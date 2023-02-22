@@ -11,7 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.162.0",
+    "@aws-sdk/client-dynamodb": "^3.276.0",
     "@vendia/serverless-express": "^4.3.9",
     "express": "^4.17.1",
     "sentiment": "^5.0.2"
