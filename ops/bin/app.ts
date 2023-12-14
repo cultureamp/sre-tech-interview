@@ -3,8 +3,8 @@ import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { DockerImageCode, DockerImageFunction } from "aws-cdk-lib/aws-lambda";
 import { AttributeType, BillingMode, Table } from "aws-cdk-lib/aws-dynamodb";
-import { HttpApi } from "@aws-cdk/aws-apigatewayv2-alpha";
-import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
+import { HttpLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
+import { HttpApi } from "aws-cdk-lib/aws-apigatewayv2";
 
 const app = new cdk.App();
 export const stack = new cdk.Stack(app, "comment-vibe");
