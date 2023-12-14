@@ -1,6 +1,5 @@
-import * as express from "express";
-import type { ErrorRequestHandler } from "express";
-import * as Sentiment from "sentiment";
+import express, { Application, ErrorRequestHandler, Request, Response } from "express";
+import Sentiment from "sentiment";
 import {
   DynamoDBClient,
   PutItemCommand,
@@ -14,15 +13,15 @@ const dynamodb = new DynamoDBClient(options);
 const sentiment = new Sentiment();
 
 const createApp = () => {
-  const app = express();
+  const app: Application = express();
 
   app.use(express.json());
 
-  app.get("/", (req, res) => {
+  app.get("/", (req: Request, res: Response) => {
     res.json({ message: "ok" });
   });
 
-  app.post("/comment/:surveyId", async (req, res, next) => {
+  app.post("/comment/:surveyId", async (req: Request, res: Response, next) => {
     try {
       const analysis = sentiment.analyze(req.body.content);
 
@@ -59,7 +58,7 @@ const createApp = () => {
     }
   });
 
-  app.get("/report/:surveyId", async (req, res, next) => {
+  app.get("/report/:surveyId", async (req: Request, res: Response, next) => {
     try {
       const surveyId = req.params.surveyId;
 
@@ -118,14 +117,14 @@ const createApp = () => {
   });
 
   // Generic 404 JSON handler
-  app.use((req, res) => {
+  app.use((req: Request, res: Response) => {
     res.status(404).json({
       message: "not found",
     });
   });
 
   // Generic error handler, ensure client receives a JSON error response
-  app.use(((err, req, res, next) => {
+  app.use(((err, req: Request, res: Response, next) => {
     const error = err as Error;
     console.error(error);
     res.status(500).json({
