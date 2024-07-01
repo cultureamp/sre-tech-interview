@@ -1,4 +1,4 @@
-FROM node:18-alpine as build
+FROM node:20-alpine as build
 WORKDIR /app
 
 COPY package.json yarn.lock ./
@@ -7,7 +7,7 @@ RUN yarn install
 COPY src tsconfig.json ./
 RUN yarn build
 
-FROM public.ecr.aws/lambda/nodejs:16 as dist
+FROM public.ecr.aws/lambda/nodejs:20 as dist
 RUN npm install --global yarn
 
 COPY --from=build /app/package.json /app/yarn.lock ./

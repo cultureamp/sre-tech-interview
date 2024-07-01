@@ -138,7 +138,7 @@ exports[`stack matches snapshot 1`] = `
       "Properties": {
         "Code": {
           "ImageUri": {
-            "Fn::Sub": "\${AWS::AccountId}.dkr.ecr.\${AWS::Region}.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-\${AWS::AccountId}-\${AWS::Region}:42b323473df5cef9755a1b4c9dea32119f45b0069e0925746f442e804e6fc102",
+            "Fn::Sub": "\${AWS::AccountId}.dkr.ecr.\${AWS::Region}.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-\${AWS::AccountId}-\${AWS::Region}:591ec89e32fff1e714c943c9674c290c5648a9cb282d29e8a082b9a72738935e",
           },
         },
         "PackageType": "Image",
