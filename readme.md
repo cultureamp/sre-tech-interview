@@ -172,7 +172,7 @@ curl -X POST http://localhost:9000/2015-03-31/functions/function/invocations -d 
 ## Deploying to AWS with the CDK application
 
 Requirements to run the CDK application:
-- Node 16
+- Node 20
 - `yarn`
 
 These can be installed using [asdf](https://asdf-vm.com/guide/getting-started.html), which will utilize the versions set in `.tool-versions`.
