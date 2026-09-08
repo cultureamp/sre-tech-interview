@@ -11,24 +11,21 @@
     "test": "jest"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.473.0",
-    "@vendia/serverless-express": "^4.10.4",
-    "express": "^4.21.2",
+    "@aws-sdk/client-dynamodb": "^3.1128.0",
+    "@codegenie/serverless-express": "^5.0.0",
+    "express": "^5.2.1",
     "sentiment": "^5.0.2"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0",
-    "@types/jest": "^29.5.11",
-    "@types/node": "^20.14.9",
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.13.3",
     "@types/sentiment": "^5.0.4",
-    "dotenv-cli": "^7.3.0",
-    "jest": "^29.7.0",
+    "dotenv-cli": "^11.0.0",
+    "jest": "^30.5.1",
     "source-map-support": "^0.5.21",
-    "ts-jest": "^29.1.1",
+    "ts-jest": "^29.4.12",
     "ts-node": "^10.9.2",
-    "typescript": "~5.5.2"
-  },
-  "resolutions": {
-    "fast-xml-parser": "^4.4.1"
+    "typescript": "~5.9.3"
   }
 }
