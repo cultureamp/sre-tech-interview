@@ -24,8 +24,8 @@ Requirements:
 
 - Docker (or compatible), with Docker Compose v2 and above
 - (optional) `asdf` or `mise` for easy tool installation -- this will install Node and Yarn using the `.tool-versions` file.
-- Node 20
-- Yarn 1.22.19
+- Node 24
+- Yarn 1.22.22
 
 > [!TIP]
 > Consider a GitHub Codespace (or similar) that has this tooling installed if
@@ -69,7 +69,7 @@ Run Express.js app locally
 
 ```console
 $ yarn start
-yarn run v1.22.15
+yarn run v1.22.22
 dotenv ts-node src/local.ts
 Server started on port 3000
 ```
@@ -172,8 +172,8 @@ curl -X POST http://localhost:9000/2015-03-31/functions/function/invocations -d 
 ## Deploying to AWS with the CDK application
 
 Requirements to run the CDK application:
-- Node 16
-- `yarn`
+- Node 24
+- Yarn 1.22.22
 
 These can be installed using [asdf](https://asdf-vm.com/guide/getting-started.html), which will utilize the versions set in `.tool-versions`.
 
