@@ -1,0 +1,20 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sre-tech-interview
+  description: >-
+    Technical interview exercise for SRE candidates. # TODO confirm: README is under ops/, not the root
+  links:
+    - title: Source
+      url: https://github.com/cultureamp/sre-tech-interview
+  tags:
+    - asset-criticality-low
+    - camp-sre
+    - data-classification-public # TODO confirm: repo is public
+  annotations:
+    github.com/project-slug: cultureamp/sre-tech-interview
+    github.com/team-slug: cultureamp/sre-enablement
+spec:
+  type: documentation
+  lifecycle: production # TODO confirm
+  owner: sre-enablement
